@@ -1,15 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-
 const User = require('../models/user.js');
 
 router.get('/sign-up', (req, res) => {
   res.render('auth/sign-up.ejs');
 });
 
+router.post('/sign-up', async (req, res) => {
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+  const user = new User({
+    username: req.body.username,
+    password: hashedPassword
+  });
+  await user.save();
+  res.redirect('/auth/sign-in');
+});
+
 router.get('/sign-in', (req, res) => {
   res.render('auth/sign-in.ejs');
+});
+
+router.post('/sign-in', async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+  if (user && await bcrypt.compare(req.body.password, user.password)) {
+    req.session.user = user;
+    res.redirect(`/users/${user._id}/foods`);
+  } else {
+    res.redirect('/auth/sign-in');
+  }
 });
 
 router.get('/sign-out', (req, res) => {
