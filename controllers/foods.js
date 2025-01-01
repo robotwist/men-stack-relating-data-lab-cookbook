@@ -28,7 +28,7 @@ router.get('/new', async (req, res) => {
 });
 
 // Create - POST /users/:userId/foods
-router.post('/', async (req, res) => {
+router.post('/:userId/foods', async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
@@ -77,6 +77,7 @@ router.put('/:itemId', async (req, res) => {
     res.redirect('/');
   }
 });
+
 // Delete - DELETE /users/:userId/foods/:itemId
 router.delete('/:itemId', async (req, res) => {
   try {

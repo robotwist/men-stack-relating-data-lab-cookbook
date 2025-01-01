@@ -14,7 +14,7 @@ const usersController = require('./controllers/users.js');
 const isSignedIn = require('./middleware/is-signed-in.js');
 const passUserToView = require('./middleware/pass-user-to-view.js');
 
-const port = process.env.PORT ? process.env.PORT : '3000';
+const port = process.env.PORT || 3000;
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -22,14 +22,19 @@ mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
+mongoose.connection.on('error', (err) => {
+  console.error(`MongoDB connection error: ${err}`);
+});
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.static('public'));
 app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 app.use(session({
-  secret: 'yourSecretKey',
+  secret: process.env.SESSION_SECRET || 'yourSecretKey',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
 }));
 
 app.use(passUserToView);
@@ -45,6 +50,11 @@ app.get('/', (req, res) => {
 
 app.use((req, res, next) => {
   res.status(404).send('Sorry, that route does not exist.');
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 app.listen(port, () => {

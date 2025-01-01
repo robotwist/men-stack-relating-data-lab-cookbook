@@ -4,25 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home Page</title>
+  <link rel="stylesheet" href="/styles.css">
   <body>
     <%- include('./partials/_navbar.ejs') %>
-    <h1>Welcome to CookBook</h1>
-    <a href="/users/<%= user._id %>/foods/new">Add New Item</a>
+    <h1>Welcome To Your Friendly Neighborhood Cookbook</h1>
+    <a href="/users/<%= user._id %>/foods/new">Add A New Ingredient</a>
   </body>
 </head>
 <body>
   <% if (user) { %>
-    <h1>Welcome to the app, <%= user.username %>!</h1>
+    <h1>Welcome To This Amazing Application, <%= user.username %>!</h1>
     <p>
       <a href="/auth/sign-out">Sign out</a>
     </p>
   <% } else { %>
-    <h1>Welcome to the app, guest.</h1>
+    <h1>Welcome to this recipe-slinging app, gustario!</h1>
     <p>
       <a href="/auth/sign-up">Sign up</a> or
       <a href="/auth/sign-in">Sign in</a>.
     </p>
   <% } %>
-  <p><a href="/vip-lounge">Get into the VIP Users Only lounge!</a></p>
+  <p><a href="/vip-lounge">Get into the Exclusive VIP Kitchen and Lounge!</a></p>
 </body>
 </html>
