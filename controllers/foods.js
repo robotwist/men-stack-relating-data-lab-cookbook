@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user.js');
+const isSignedIn = require('../middleware/is-signed-in.js');
 
 // Index - GET /users/:userId/foods
 router.get('/', async (req, res) => {
@@ -20,16 +21,19 @@ router.get('/', async (req, res) => {
 // New - GET /users/:userId/foods/new
 router.get('/new', async (req, res) => {
   try {
-    res.render('foods/new.ejs', { userId: req.params.userId });
+    console.log('User ID:', res.locals.user._id);
+    res.render('foods/new.ejs', { userId: res.locals.user._id });
   } catch (error) {
     console.error(error);
     res.redirect('/');
   }
-});
-
-// Create - POST /users/:userId/foods
+});// Create - POST /users/:userId/foods
 router.post('/:userId/foods', async (req, res) => {
   try {
+    console.log('POST /users/:userId/foods');
+    console.log('req.params.userId:', req.params.userId);
+    console.log('req.body:', req.body);
+
     const user = await User.findById(req.params.userId);
     if (!user) {
       console.error('User not found');
