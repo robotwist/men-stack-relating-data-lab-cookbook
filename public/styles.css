@@ -39,6 +39,14 @@ h2 {
   margin-bottom: 1rem;
 }
 
+p {
+  color: #333;
+  text-decoration: none;
+  font-family: 'Bodoni Moda', serif; /* Change font family */
+  font-size: 1.5rem; /* Adjust font size */
+  font-weight: bold; /* Adjust font weight */ 
+}
+
 a {
   color: #333;
   text-decoration: none;
@@ -91,6 +99,11 @@ input[type="text"], input[type="password"] {
   margin-bottom: 1rem;
   border: 1px solid #ddd;
   border-radius: 5px;
+    color: #333;
+    text-decoration: none;
+    font-family: 'Bodoni Moda', serif; /* Change font family */
+    font-size: 1.5rem; /* Adjust font size */
+    font-weight: normal; /* Adjust font weight normal bolder numeric 400 norm */ 
 }
 
 .container {
