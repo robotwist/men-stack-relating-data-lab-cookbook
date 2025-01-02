@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="/styles.css">
   <body>
     <%- include('./partials/_navbar.ejs') %>
-    <h1>What Ingredients Do you Want In Your Cookbook?</h1>
-    <a href="/users/<%= user._id %>/foods/new">Add A Special New Ingredient</a>
+    <h1>Welcome To Your Friendly Neighborhood Cookbook</h1>
+    <a href="/users/<%= user._id %>/foods/new">Add A New Ingredient</a>
   </body>
 </head>
 <body>
@@ -16,9 +16,9 @@
     <!-- Additional content can go here if needed -->
   </div>
   <% if (user) { %>
-    <h1>Welcome To Your Happy Little Cookbook, <%= user.username %>!</h1>
+    <h1>Welcome To This Amazing Application, <%= user.username %>!</h1>
     <p>
-      <a href="/auth/sign-out">Sign Out and Go Cook</a>
+      <a href="/auth/sign-out">Sign out</a>
     </p>
   <% } else { %>
     <h1>Welcome to this recipe-slinging app, gustario!</h1>
@@ -27,6 +27,6 @@
       <a href="/auth/sign-in">Sign in</a>.
     </p>
   <% } %>
-  <p><a href="/vip-lounge">Enter the Exclusive VIP Kitchen and Lounge!</a></p>
+  <p><a href="/vip-lounge">Get into the Exclusive VIP Kitchen and Lounge!</a></p>
 </body>
 </html>
