@@ -35,4 +35,24 @@ router.post('/users/:userId/foods', isSignedIn, async (req, res) => {
   }
 });
 
+
+async function addFood(userId, foodData) {
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error('User not found'); 
+    }
+
+    user.pantry.push(foodData);
+    await user.save();
+
+    return user; 
+  } catch (error) {
+    throw error; 
+  }
+}
+
+module.exports = addFood;
+
 module.exports = router;

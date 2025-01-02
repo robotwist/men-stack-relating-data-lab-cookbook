@@ -13,8 +13,8 @@ const passUserToView = require('./middleware/pass-user-to-view.js');
 const authController = require('./controllers/auth.js');
 const foodsController = require('./controllers/foods.js');
 const usersController = require('./controllers/users.js');
-const vipController = require('./controllers/vip.js');
-const addFoodController = require('./controllers/addFood.js')
+const vipController = require('./controllers/vip.js'); // Add this line
+const addFoodController = require('./controllers/addFood.js');
 
 const port = process.env.PORT || 3000;
 
@@ -44,8 +44,7 @@ app.use('/auth', authController);
 app.use(isSignedIn);
 app.use('/users/:userId/foods', foodsController);
 app.use('/users', usersController);
-app.use(vipController);
-app.use(addFoodController);
+app.use(vipController); // Add this line
 
 // Route for the root URL
 app.get('/', (req, res) => {
