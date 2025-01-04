@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user.js');
-const isSignedIn = require('../middleware/is-signed-in.js');
+
 // Index - GET /users
 router.get('/', async (req, res) => {
   try {
@@ -24,7 +24,7 @@ router.get('/:userId', async (req, res) => {
     res.render('users/show.ejs', { user });
   } catch (error) {
     console.error(error);
-    res.redirect('/');
+    res.redirect('/users');
   }
 });
 

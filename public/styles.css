@@ -82,8 +82,7 @@ form {
 label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: bolder;
-  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 input[type="text"], input[type="password"] {
@@ -92,9 +91,6 @@ input[type="text"], input[type="password"] {
   margin-bottom: 1rem;
   border: 1px solid #ddd;
   border-radius: 5px;
-  font-size: 1rem;
-  font-family: 'Bodoni Moda', serif;
-  font-weight: bolder;
 }
 
 .container {

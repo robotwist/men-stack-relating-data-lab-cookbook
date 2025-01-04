@@ -6,9 +6,8 @@ const isSignedIn = require('../middleware/is-signed-in.js');
 // New - GET /users/:userId/foods/new
 router.get('/users/:userId/foods/new', isSignedIn, async (req, res) => {
   try {
-    console.log('GET /users/:userId/foods/new');
-    console.log('req.params.userId:', req.params.userId);
-    res.render('foods/new.ejs', { userId: req.params.userId });
+    console.log('User ID:', res.locals.user._id);
+    res.render('foods/new.ejs', { userId: res.locals.user._id });
   } catch (error) {
     console.error(error);
     res.redirect('/');
@@ -27,9 +26,6 @@ router.post('/users/:userId/foods', isSignedIn, async (req, res) => {
       console.error('User not found');
       return res.redirect('/');
     }
-    if (!user.pantry) {
-      user.pantry = []; // Initialize pantry if it doesn't exist
-    }
     user.pantry.push(req.body);
     await user.save();
     res.redirect(`/users/${req.params.userId}/foods`);
@@ -38,5 +34,25 @@ router.post('/users/:userId/foods', isSignedIn, async (req, res) => {
     res.redirect('/');
   }
 });
+
+
+async function addFood(userId, foodData) {
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error('User not found'); 
+    }
+
+    user.pantry.push(foodData);
+    await user.save();
+
+    return user; 
+  } catch (error) {
+    throw error; 
+  }
+}
+
+module.exports = addFood;
 
 module.exports = router;
