@@ -1,10 +1,11 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const User = require('../models/user.js');
 const isSignedIn = require('../middleware/is-signed-in.js');
+const Food = require('../models/food');
 
 // Index - GET /users/:userId/foods
-router.get('/', async (req, res) => {
+router.get('/', isSignedIn, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId).populate('pantry');
     if (!user) {
@@ -19,16 +20,18 @@ router.get('/', async (req, res) => {
 });
 
 // New - GET /users/:userId/foods/new
-router.get('/new', async (req, res) => {
+router.get('/new', isSignedIn, async (req, res) => {
   try {
-    console.log('User ID:', res.locals.user._id);
-    res.render('foods/new.ejs', { userId: res.locals.user._id });
+    console.log('User ID:', req.params.userId);
+    res.render('foods/new.ejs', { userId: req.params.userId });
   } catch (error) {
     console.error(error);
     res.redirect('/');
   }
-});// Create - POST /users/:userId/foods
-router.post('/:userId/foods', async (req, res) => {
+});
+
+// Create - POST /users/:userId/foods
+router.post('/', isSignedIn, async (req, res) => {
   try {
     console.log('POST /users/:userId/foods');
     console.log('req.params.userId:', req.params.userId);
@@ -39,7 +42,10 @@ router.post('/:userId/foods', async (req, res) => {
       console.error('User not found');
       return res.redirect('/');
     }
-    user.pantry.push(req.body);
+    if (!user.pantry) {
+      user.pantry = []; // Initialize pantry if it doesn't exist
+    }
+    user.pantry.push({ name: req.body.name }); // Ensure only necessary fields are added
     await user.save();
     res.redirect(`/users/${req.params.userId}/foods`);
   } catch (error) {
@@ -49,7 +55,7 @@ router.post('/:userId/foods', async (req, res) => {
 });
 
 // Edit - GET /users/:userId/foods/:itemId/edit
-router.get('/:itemId/edit', async (req, res) => {
+router.get('/:itemId/edit', isSignedIn, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
@@ -65,7 +71,7 @@ router.get('/:itemId/edit', async (req, res) => {
 });
 
 // Update - PUT /users/:userId/foods/:itemId
-router.put('/:itemId', async (req, res) => {
+router.put('/:itemId', isSignedIn, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {
@@ -83,7 +89,7 @@ router.put('/:itemId', async (req, res) => {
 });
 
 // Delete - DELETE /users/:userId/foods/:itemId
-router.delete('/:itemId', async (req, res) => {
+router.delete('/:itemId', isSignedIn, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     if (!user) {

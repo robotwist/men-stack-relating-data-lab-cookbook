@@ -1,6 +1,17 @@
-const passUserToView = (req, res, next) => {
-  console.log('User in session:', req.session.user);
-  res.locals.user = req.session.user ? req.session.user : null;
+const User = require('../models/user');
+
+const passUserToView = async (req, res, next) => {
+  if (req.session.userId) {
+    try {
+      const user = await User.findById(req.session.userId);
+      res.locals.user = user;
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      res.locals.user = null;
+    }
+  } else {
+    res.locals.user = null;
+  }
   next();
 };
 
